@@ -15,6 +15,6 @@ describe port(80) do
   it { should be_listening }
 end
 describe file('/var/www/html/index.html') do
-  it { should contain '<html>This is a placeholder for the home page.</html>' }
+  it { should contain '<html>Automation for the People</html>' }
 end
 

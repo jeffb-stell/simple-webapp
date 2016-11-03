@@ -13,7 +13,7 @@ include_recipe 'simple-webapp::apache'
 
 
 file '/var/www/html/index.html' do
-  content '<html>This is a placeholder for the home page.</html>'
+  content '<html>Automation for the People</html>'
   mode '0755'
   owner 'www-data'
   group 'www-data'
