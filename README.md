@@ -91,9 +91,9 @@ For the purposes of this demonstration I already had a security group created wi
 
 I also generated a keypair with the [AWS CLI](http://docs.aws.amazon.com/cli/latest/reference/ec2/create-key-pair.html "AWS CLI"). Which I then used to set the value of aws_ssh_key_id and transport.ssh_key
 
-No when running 
+Now when running 
 
-	~$ kitchen create
+	~$ kitchen verify
 
 It should result in something like this
 
@@ -106,32 +106,63 @@ It should result in something like this
 	should be minimal, but neither Test Kitchen nor its maintainers
 	are responsible for your incurred costs.
 
-	       Instance <i-0712b5d3e8614e42e> requested.
+	       Instance <i-0dc9ab01dbf5237bd> requested.
 	       Polling AWS for existence, attempt 0...
 	       Attempting to tag the instance, 0 retries
-	       EC2 instance <i-0712b5d3e8614e42e> created.
-	       Waited 0/300s for instance <i-0712b5d3e8614e42e> to become ready.
-	       Waited 5/300s for instance <i-0712b5d3e8614e42e> to become ready.
-	       Waited 10/300s for instance <i-0712b5d3e8614e42e> to become ready.
-	       Waited 15/300s for instance <i-0712b5d3e8614e42e> to become ready.
-	       Waited 20/300s for instance <i-0712b5d3e8614e42e> to become ready.
-	       Waited 25/300s for instance <i-0712b5d3e8614e42e> to become ready.
-	       EC2 instance <i-0712b5d3e8614e42e> ready.
-	       Waiting for SSH service on ec2-54-212-240-248.us-west-2.compute.amazonaws.com:22, retrying in 3 seconds
-	       Waiting for SSH service on ec2-54-212-240-248.us-west-2.compute.amazonaws.com:22, retrying in 3 seconds
-	       Waiting for SSH service on ec2-54-212-240-248.us-west-2.compute.amazonaws.com:22, retrying in 3 seconds
-	       Waiting for SSH service on ec2-54-212-240-248.us-west-2.compute.amazonaws.com:22, retrying in 3 seconds
-	       [SSH] Established
-	       Finished creating <default-ubuntu-1404> (1m4.06s).
+	       EC2 instance <i-0dc9ab01dbf5237bd> created.
+	       Waited 0/300s for instance <i-0dc9ab01dbf5237bd> to become ready.
+	       Waited 5/300s for instance <i-0dc9ab01dbf5237bd> to become ready.
+	       Waited 10/300s for instance <i-0dc9ab01dbf5237bd> to become ready.
+	       Waited 15/300s for instance <i-0dc9ab01dbf5237bd> to become ready.
+	       Waited 20/300s for instance <i-0dc9ab01dbf5237bd> to become ready.
+	       Waited 25/300s for instance <i-0dc9ab01dbf5237bd> to become ready.
+	       Waited 30/300s for instance <i-0dc9ab01dbf5237bd> to become ready.
+.......
+.......
 	-----> Kitchen is finished. (1m7.13s)
 
-This creates the initial env running on AWS.
 
-Let's run the tests.
-
-	~$ kitchen verify
 
 Now we should very similar results as our vagrant run.
+
+	-----> Running bats test suite
+	 ✓ apachectl binary is found in PATH
+	       
+	       1 test, 0 failures
+	-----> Running serverspec test suite
+	-----> Installing Serverspec..
+	Fetching: diff-lcs-1.2.5.gem (100%)
+	Fetching: rspec-expectations-3.5.0.gem (100%)
+	Fetching: rspec-mocks-3.5.0.gem (100%)
+	Fetching: rspec-3.5.0.gem (100%)
+	Fetching: rspec-its-1.2.0.gem (100%)
+	Fetching: multi_json-1.12.1.gem (100%)
+	Fetching: net-ssh-3.2.0.gem (100%)
+	Fetching: net-scp-1.2.1.gem (100%)
+	Fetching: net-telnet-0.1.1.gem (100%)
+	Fetching: sfl-2.3.gem (100%)
+	Fetching: specinfra-2.64.0.gem (100%)
+	Fetching: serverspec-2.37.2.gem (100%)
+	-----> serverspec installed (version 2.37.2)
+	       /opt/chef/embedded/bin/ruby -I/tmp/verifier/suites/serverspec -I/tmp/verifier/gems/gems/rspec-support-3.5.0/lib:/tmp/verifier/gems/gems/rspec-core-3.5.4/lib /opt/chef/embedded/bin/rspec --pattern /tmp/verifier/suites/serverspec/\*\*/\*_spec.rb --color --format documentation --default-path /tmp/verifier/suites/serverspec
+	       
+	       Package "apache2"
+	         should be installed
+	       
+	       Service "apache2"
+	         should be enabled
+	         should be running
+	       
+	       Port "80"
+	         should be listening
+	       
+	       File "/var/www/html/index.html"
+	         should contain "<html>Automation for the People</html>"
+	       
+	       Finished in 0.04435 seconds (files took 0.37787 seconds to load)
+	       5 examples, 0 failures
+
+
 
 Now let's get the public dns to the new instance.
 
