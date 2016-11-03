@@ -1,15 +1,27 @@
 ---
 driver:
   name: vagrant
+  # name: ec2
+  # aws_ssh_key_id: louie
+  # transport.ssh_key: ~/.ssh/louie
+  # transport.username: ubuntu
+  # region: us-west-2
+  # availability_zone: us-west-2b
+  # require_chef_omnibus: true
+  # security_group_ids: sg-dce191a5
+  # subnet_id: subnet-cc2bd3ba
+  # associate_public_ip: true
+  # interface: dns
 
 provisioner:
   name: chef_solo
-
+  data_path: test/shared
+  
 platforms:
   - name: ubuntu-14.04
-  - name: centos-7.2
 
 suites:
   - name: default
     run_list:
+      - recipe[simple-webapp::default]
     attributes:
