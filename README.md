@@ -42,7 +42,7 @@ You should see the following results for the bats test
 	-----> Running bats test suite
 	 ✓ apachectl binary is found in PATH
 
-The serverspec tests make sure Apache us installed, enabled and running. It also tests to make sure port 80 is open and whether the updated index.html file exists where its supposed to.
+The serverspec tests make sure Apache is installed, enabled and running. It also tests to make sure port 80 is open and whether the updated index.html file exists where its supposed to.
 
 Those results look like this.
 
@@ -62,8 +62,11 @@ Those results look like this.
        File "/var/www/html/index.html"
          should contain "<html>This is a placeholder for the home page.</html>"
        
+       Port "22"
+         should be listening       
+       
        Finished in 0.11901 seconds (files took 0.54442 seconds to load)
-       5 examples, 0 failures
+       6 examples, 0 failures
 
 Ok we can destroy our env.
 
@@ -91,8 +94,9 @@ For the purposes of this demonstration I already had a security group created wi
 
 I also generated a keypair with the [AWS CLI](http://docs.aws.amazon.com/cli/latest/reference/ec2/create-key-pair.html "AWS CLI"). Which I then used to set the value of aws_ssh_key_id and transport.ssh_key
 
-	aws ec2 create-key-pair --key-name louie > ~/.ssh/louie
+	aws ec2 create-key-pair --key-name louie | ruby -e "require 'json'; puts JSON.parse(STDIN.read)['KeyMaterial']" > ~/.ssh/louie
 	sudo chmod 400 ~/.ssh/louie
+	export AWS_SSH_KEY_ID=louie
 
 
 Now when running 
@@ -163,8 +167,11 @@ Now we should very similar results as our vagrant run.
 	       File "/var/www/html/index.html"
 	         should contain "<html>Automation for the People</html>"
 	       
-	       Finished in 0.04435 seconds (files took 0.37787 seconds to load)
-	       5 examples, 0 failures
+	       Port "22"
+	         should be listening
+	       
+	       Finished in 0.06 seconds (files took 0.36624 seconds to load)
+	       6 examples, 0 failures
 
 
 
