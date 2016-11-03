@@ -87,9 +87,13 @@ In order to deploy to AWS. Change the driver section in  .kitchen.yml to look li
 
 
 
-For the purposes of this demonstration I already had a security group created with port 80 and port 22 for ingress. I also used an existing public subnet that matches the region and availability zone configured above. 
+For the purposes of this demonstration I already had a security group created with port 80 and port 22 open for ingress. I also used an existing public subnet that matches the region and availability zone configured above. 
 
 I also generated a keypair with the [AWS CLI](http://docs.aws.amazon.com/cli/latest/reference/ec2/create-key-pair.html "AWS CLI"). Which I then used to set the value of aws_ssh_key_id and transport.ssh_key
+
+	aws ec2 create-key-pair --key-name louie > ~/.ssh/louie
+	sudo chmod 400 ~/.ssh/louie
+
 
 Now when running 
 
