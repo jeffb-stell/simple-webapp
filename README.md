@@ -72,7 +72,18 @@ Ok we can destroy our env.
 
 	~$ kitchen destroy
 
-In order to deploy to AWS. Change the driver section in  .kitchen.yml to look like
+###Deploying to AWS
+
+For the purposes of this demonstration I already had a security group created with port 80 and port 22 open for ingress. I also used an existing public subnet that matches the region and availability zone configured above. 
+
+I also generated a keypair with the [AWS CLI](http://docs.aws.amazon.com/cli/latest/reference/ec2/create-key-pair.html "AWS CLI"). Which I then used to set the value of aws_ssh_key_id and transport.ssh_key
+
+	aws ec2 create-key-pair --key-name louie | ruby -e "require 'json'; puts JSON.parse(STDIN.read)['KeyMaterial']" > ~/.ssh/louie
+	sudo chmod 400 ~/.ssh/louie
+	export AWS_SSH_KEY_ID=louie
+
+
+Change the driver section in  .kitchen.yml to look like
 
 	driver:
 	  #name: vagrant
@@ -88,15 +99,6 @@ In order to deploy to AWS. Change the driver section in  .kitchen.yml to look li
 	  associate_public_ip: true
 	  interface: dns
 
-
-
-For the purposes of this demonstration I already had a security group created with port 80 and port 22 open for ingress. I also used an existing public subnet that matches the region and availability zone configured above. 
-
-I also generated a keypair with the [AWS CLI](http://docs.aws.amazon.com/cli/latest/reference/ec2/create-key-pair.html "AWS CLI"). Which I then used to set the value of aws_ssh_key_id and transport.ssh_key
-
-	aws ec2 create-key-pair --key-name louie | ruby -e "require 'json'; puts JSON.parse(STDIN.read)['KeyMaterial']" > ~/.ssh/louie
-	sudo chmod 400 ~/.ssh/louie
-	export AWS_SSH_KEY_ID=louie
 
 
 Now when running 
@@ -189,7 +191,7 @@ Your actual hostname will vary.
 
 Copy and paste to a browser and you should see.
 
-	This is a placeholder for the home page.
+	Automation for the People
 
 
 Now we can destroy our env.
