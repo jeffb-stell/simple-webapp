@@ -8,7 +8,7 @@ driver:
   # region: us-west-2
   # availability_zone: us-west-2b
   # require_chef_omnibus: true
-  # security_group_ids: sg-dce191a5
+  # security_group_ids: ["sg-dce191a5"]
   # subnet_id: subnet-cc2bd3ba
   # associate_public_ip: true
   # interface: dns
@@ -16,7 +16,6 @@ driver:
 provisioner:
   name: chef_solo
 
-  
 platforms:
   - name: ubuntu-14.04
 

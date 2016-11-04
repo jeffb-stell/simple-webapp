@@ -1,8 +1,7 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem "test-kitchen"
 gem "berkshelf"
-gem "kitchen-vagrant"
+gem "test-kitchen"
 gem "kitchen-ec2"
+gem "kitchen-vagrant"
 gem "ec2"
-gem "vagrant"
